@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The case for owning your tools — Website Template</title>
+<meta name="description" content="Testing the website template with all block types.">
+<meta property="og:description" content="Testing the website template with all block types.">
+<meta name="author" content="Sebastian Susnik">
+<meta property="og:title" content="The case for owning your tools — Website Template">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8C%90%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" id="hljs-light" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+<link rel="stylesheet" id="hljs-dark" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css" disabled>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="site-nav">
+<div class="nav-inner">
+<a href="index.html" class="site-title">Website Template</a>
+<button class="nav-toggle" aria-label="Menu"><i data-lucide="menu"></i></button>
+<div class="nav-right">
+
+<a href="index.html" class="nav-link">Posts</a>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+</div>
+</div>
+</nav>
+<main class="content">
+<a href="index.html" class="back-link"><i data-lucide="arrow-left"></i> All posts</a>
+<article>
+<header class="article-header">
+<h1>The case for owning your tools</h1>
+<div class="article-meta"><time>2026-03-07</time></div>
+</header>
+<div class="prose">
+<p>Software used to be something you owned. You bought a box, installed a disc, and the program was <em>yours</em> — sitting on your hard drive, running without permission from anyone. That model is almost extinct now.</p>
+<p>Today, most creative tools are subscriptions. Your writing lives in someone else's database. Your designs render on someone else's servers. Your notes sync through someone else's infrastructure. You don't own the tool. You <em>rent access</em> to it.</p>
+<h2>What we lost</h2>
+<p>The subscription model has real advantages — continuous updates, cross-device sync, lower upfront cost. But it also introduced fragilities that didn't exist before:</p>
+<ul>
+<li><strong>Your work is hostage to the service.</strong> If the company changes pricing, pivots, or shuts down, your data goes with it. Remember Google Reader? Sunrise Calendar? Inbox by Gmail?</li>
+<li><strong>Offline is an afterthought.</strong> Most cloud-first apps barely work without a connection. In 2024, on a plane, in a cabin, in a café with bad WiFi — you can't access your own notes.</li>
+<li><strong>Privacy is negotiable.</strong> Your content passes through servers you don't control, processed by systems you can't inspect, governed by terms of service that change without notice.</li>
+</ul>
+<blockquote>
+<p>The best backup strategy is not needing one. Files on disk don't have downtime.</p>
+</blockquote>
+<h2>Local-first as a design principle</h2>
+<p>Local-first software stores data on the user's device as the primary copy. The network, if used at all, is for sync — not for functionality. The app works fully offline, and the user's data is always available, always fast, always private.</p>
+<p>This isn't a new idea. It's the <em>original</em> idea — rediscovered after a decade of cloud-first excess.</p>
+<h3>The principles</h3>
+<p>The local-first manifesto outlines seven ideals:</p>
+<ol>
+<li>No spinners — operations are instant because they hit disk, not network</li>
+<li>Your data, your machine — no account required, no server dependency</li>
+<li>Full offline support — the network is an enhancement, not a requirement</li>
+<li>Collaboration is opt-in — sync when you want, with whom you want</li>
+<li>Longevity — files outlive apps; standards outlive companies</li>
+<li>Security by default — data never leaves the device unless you choose</li>
+<li>User control — you decide where data lives, how it's backed up, who sees it</li>
+</ol>
+<h2>The file system is underrated</h2>
+<p>Markdown files in a folder is not a limitation — it's a <em>feature</em>. Consider what the filesystem gives you for free:</p>
+<table><thead><tr><th>Capability</th><th>How</th></tr></thead><tbody>
+<tr><td>Search</td><td><code>grep -r "keyword" ~/notes/</code></td></tr>
+<tr><td>Backup</td><td>Copy the folder. Done.</td></tr>
+<tr><td>Version control</td><td><code>git init &amp;&amp; git add .</code></td></tr>
+<tr><td>Sync</td><td>Dropbox, iCloud, Syncthing, rsync</td></tr>
+<tr><td>Automation</td><td>Shell scripts, cron jobs, Hazel rules</td></tr>
+<tr><td>Portability</td><td>Open in any editor, on any OS</td></tr>
+</tbody></table>
+<p>No API, no SDK, no migration tool. Just files.</p>
+<h3>The git advantage</h3>
+<p>When your notes are files, git becomes a superpower:</p>
+<pre><code class="language-bash"># See everything you wrote last week
+git log --after="1 week ago" --format="%h %s" --stat
+
+# Find when you first mentioned a topic
+git log -S "machine learning" --oneline
+
+# Restore a deleted note
+git checkout HEAD~10 -- notes/deleted-note.md
+</code></pre>
+<p>This is not hypothetical — these are real commands you can run on a Glifo vault right now. Every save creates a commit. The entire history of your thinking is preserved.</p>
+<h2>The trade-offs</h2>
+<p>Let's be honest about what local-first costs:</p>
+<ul>
+<li><strong>No real-time collaboration.</strong> Two people can't edit the same note simultaneously without conflict resolution (CRDTs, OT). For a personal tool, this is fine. For a team wiki, it's a dealbreaker.</li>
+<li><strong>Sync is manual.</strong> You push and pull explicitly. There's no magic background sync that "just works" across devices.</li>
+<li><strong>Backup is your responsibility.</strong> If your disk dies and you haven't pushed to a remote, that's on you.</li>
+</ul>
+<p>These are real trade-offs. But for personal writing — journals, notes, drafts, essays — the benefits overwhelmingly outweigh the costs.</p>
+<hr />
+<p>The tools you use shape the thoughts you have. Fragile tools produce anxious thinking. Reliable tools produce focused thinking. Own your tools and your thoughts stay yours.</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Implement offline-first architecture</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Add git-based version history</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Build one-click publishing</li>
+<li><input disabled="" type="checkbox"/>
+Add optional encrypted remote backup</li>
+<li><input disabled="" type="checkbox"/>
+Explore CRDT-based sync for multi-device</li>
+</ul>
+
+</div>
+</article>
+</main>
+<footer class="site-footer">
+<div class="footer-inner">
+<span>Website Template &mdash; Sebastian Susnik</span>
+<span>Published with <a href="https://glifo.app">Glifo</a></span>
+</div>
+</footer>
+<script>
+(function(){
+const t = document.getElementById("themeToggle");
+const r = document.documentElement;
+const hl = document.getElementById("hljs-light");
+const hd = document.getElementById("hljs-dark");
+function setDark(d, save) {
+  if (d) {
+    r.classList.add("dark");
+    hl.disabled = true;
+    hd.disabled = false;
+  } else {
+    r.classList.remove("dark");
+    hl.disabled = false;
+    hd.disabled = true;
+  }
+  t.innerHTML = `<i data-lucide="${d ? "sun" : "moon"}"></i>`;
+  lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "lucide" } });
+  if (save)
+    try {
+      localStorage.setItem("theme", d ? "dark" : "light");
+    } catch {}
+}
+let saved = null;
+try {
+  saved = localStorage.getItem("theme");
+} catch {}
+if (saved === "dark") setDark(true);
+else if (saved === "light") setDark(false);
+else if (window.matchMedia("(prefers-color-scheme:dark)").matches)
+  setDark(true);
+t.addEventListener("click", () => {
+  setDark(!r.classList.contains("dark"), true);
+});
+const navToggle = document.querySelector(".nav-toggle");
+const navContainer = document.querySelector(".nav-right");
+if (navToggle && navContainer)
+  navToggle.addEventListener("click", () => {
+    navContainer.classList.toggle("open");
+  });
+hljs.highlightAll();
+const lbOverlay = document.createElement("div");
+lbOverlay.className = "lightbox";
+const lbImg = document.createElement("img");
+const lbClose = document.createElement("button");
+lbClose.className = "lightbox-close";
+lbClose.innerHTML = "&#10005;";
+lbClose.setAttribute("aria-label", "Close");
+lbOverlay.appendChild(lbClose);
+lbOverlay.appendChild(lbImg);
+document.body.appendChild(lbOverlay);
+function closeLb() {
+  lbOverlay.classList.remove("active");
+  setTimeout(() => {
+    lbOverlay.style.display = "none";
+  }, 200);
+}
+lbClose.addEventListener("click", (e) => {
+  e.stopPropagation();
+  closeLb();
+});
+lbOverlay.addEventListener("click", (e) => {
+  if (e.target === lbOverlay) closeLb();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lbOverlay.classList.contains("active")) closeLb();
+});
+document.querySelectorAll(".prose img").forEach((img) => {
+  img.addEventListener("click", () => {
+    lbImg.src = img.src;
+    lbOverlay.style.display = "flex";
+    requestAnimationFrame(() => {
+      lbOverlay.classList.add("active");
+    });
+  });
+});
+document.querySelectorAll("pre").forEach((pre) => {
+  const code = pre.querySelector("code");
+  if (!code) return;
+  const m = code.className.match(/language-(\S+)/);
+  let lang = m ? m[1] : "";
+  if (lang === "plaintext" || lang === "undefined") lang = "";
+  if (lang) {
+    const lb = document.createElement("span");
+    lb.className = "code-lang";
+    lb.textContent = lang;
+    pre.insertBefore(lb, code);
+  }
+  const btn = document.createElement("button");
+  btn.className = "code-copy-btn";
+  btn.innerHTML = '<i data-lucide="copy" class="lucide"></i>';
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(code.textContent || "").then(() => {
+      btn.innerHTML = '<i data-lucide="check" class="lucide"></i>';
+      lucide.createIcons({
+        nodes: [btn],
+        nameAttr: "data-lucide",
+        attrs: { class: "lucide" },
+      });
+      setTimeout(() => {
+        btn.innerHTML = '<i data-lucide="copy" class="lucide"></i>';
+        lucide.createIcons({
+          nodes: [btn],
+          nameAttr: "data-lucide",
+          attrs: { class: "lucide" },
+        });
+      }, 1500);
+    });
+  });
+  pre.insertBefore(btn, code);
+});
+lucide.createIcons({nameAttr:'data-lucide',attrs:{class:'lucide'}});
+const si = document.getElementById("listingSearch");
+if (si) {
+  const items = document.querySelectorAll(".post-card");
+  si.addEventListener("input", function () {
+    const q = this.value.toLowerCase();
+    items.forEach((item) => {
+      item.style.display = item.textContent.toLowerCase().includes(q)
+        ? ""
+        : "none";
+    });
+  });
+}
+
+})();
+</script>
+</body>
+</html>

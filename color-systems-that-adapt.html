@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color systems that adapt — Website Template</title>
+<meta name="description" content="Testing the website template with all block types.">
+<meta property="og:description" content="Testing the website template with all block types.">
+<meta name="author" content="Sebastian Susnik">
+<meta property="og:title" content="Color systems that adapt — Website Template">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8C%90%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" id="hljs-light" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+<link rel="stylesheet" id="hljs-dark" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css" disabled>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="site-nav">
+<div class="nav-inner">
+<a href="index.html" class="site-title">Website Template</a>
+<button class="nav-toggle" aria-label="Menu"><i data-lucide="menu"></i></button>
+<div class="nav-right">
+
+<a href="index.html" class="nav-link">Posts</a>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+</div>
+</div>
+</nav>
+<main class="content">
+<a href="index.html" class="back-link"><i data-lucide="arrow-left"></i> All posts</a>
+<article>
+<header class="article-header">
+<h1>Color systems that adapt</h1>
+<div class="article-meta"><time>2026-03-07</time></div>
+</header>
+<div class="prose">
+<p>A single hex value can generate an entire color palette. This is not a theoretical exercise — it is how modern design systems work. Given <code>#3b82f6</code>, you can derive 10 shades, 3 semantic colors, and both light and dark themes without touching a color picker.</p>
+<h2>Perceptual uniformity</h2>
+<p>The HSL color model is a lie. Moving the lightness slider from 50% to 60% does not produce a <em>perceptually</em> equivalent step across different hues. A yellow at 50% lightness looks dramatically different from a blue at the same value. This is why most auto-generated palettes look muddy or unbalanced.</p>
+<p>The solution is to work in <strong>OKLCH</strong> — a perceptually uniform color space where equal numeric steps produce equal visual steps:</p>
+<pre><code class="language-css">:root {
+  --accent-base: oklch(0.65 0.18 250);
+  --accent-light: oklch(0.80 0.12 250);
+  --accent-dark: oklch(0.45 0.20 250);
+  --accent-surface: oklch(0.95 0.03 250);
+}
+</code></pre>
+<p>This gives us a palette where every shade feels intentional, because the math <em>is</em> the intention.</p>
+<h2>Dark mode is not an inversion</h2>
+<p>The most common mistake in dark mode implementation is inverting the palette — swapping white for black and calling it done. Real dark themes require:</p>
+<ol>
+<li><strong>Reduced contrast</strong> — Pure white text on pure black is harsh. Use <code>#e0e0e0</code> on <code>#1a1a1a</code> instead.</li>
+<li><strong>Desaturated colors</strong> — Saturated hues glow on dark backgrounds. Pull chroma down by 15–20%.</li>
+<li><strong>Elevated surfaces</strong> — Without shadows (which are invisible on dark), use subtle lightness variations to create depth.</li>
+<li><strong>Dimmed images</strong> — Photos at full brightness are jarring. Apply <code>filter: brightness(0.85)</code> or <code>opacity: 0.9</code>.</li>
+</ol>
+<blockquote>
+<p>Dark mode should feel like turning down the lights in a room — not like entering a cave.</p>
+</blockquote>
+<h3>Surface hierarchy</h3>
+<p>In a dark theme, depth is communicated through lightness, not shadow:</p>
+<table><thead><tr><th>Layer</th><th>Light mode</th><th>Dark mode</th></tr></thead><tbody>
+<tr><td>Base</td><td><code>#ffffff</code></td><td><code>#1a1a1a</code></td></tr>
+<tr><td>Surface</td><td><code>#f8f8f8</code></td><td><code>#242424</code></td></tr>
+<tr><td>Elevated</td><td><code>#f0f0f0</code></td><td><code>#2e2e2e</code></td></tr>
+<tr><td>Overlay</td><td><code>rgba(0,0,0,0.05)</code></td><td><code>rgba(255,255,255,0.05)</code></td></tr>
+</tbody></table>
+<p>This creates a visual stack that feels natural in both modes without relying on <code>box-shadow</code> — which disappears against dark backgrounds anyway.</p>
+<h2>Implementation in practice</h2>
+<p>Here's a minimal theme toggle using CSS custom properties and a single class on the root:</p>
+<pre><code class="language-javascript">const toggle = document.querySelector('.theme-toggle');
+const root = document.documentElement;
+
+toggle.addEventListener('click', () =&gt; {
+  const isDark = root.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+</code></pre>
+<p>The toggle is instant because all the work is done in CSS — the JavaScript just flips a class. No re-renders, no FOUC, no layout shift.</p>
+<hr />
+<p>Color is the most emotional axis of any design system. Get it right and the user never notices. Get it wrong and nothing else matters.</p>
+
+</div>
+</article>
+</main>
+<footer class="site-footer">
+<div class="footer-inner">
+<span>Website Template &mdash; Sebastian Susnik</span>
+<span>Published with <a href="https://glifo.app">Glifo</a></span>
+</div>
+</footer>
+<script>
+(function(){
+const t = document.getElementById("themeToggle");
+const r = document.documentElement;
+const hl = document.getElementById("hljs-light");
+const hd = document.getElementById("hljs-dark");
+function setDark(d, save) {
+  if (d) {
+    r.classList.add("dark");
+    hl.disabled = true;
+    hd.disabled = false;
+  } else {
+    r.classList.remove("dark");
+    hl.disabled = false;
+    hd.disabled = true;
+  }
+  t.innerHTML = `<i data-lucide="${d ? "sun" : "moon"}"></i>`;
+  lucide.createIcons({ nameAttr: "data-lucide", attrs: { class: "lucide" } });
+  if (save)
+    try {
+      localStorage.setItem("theme", d ? "dark" : "light");
+    } catch {}
+}
+let saved = null;
+try {
+  saved = localStorage.getItem("theme");
+} catch {}
+if (saved === "dark") setDark(true);
+else if (saved === "light") setDark(false);
+else if (window.matchMedia("(prefers-color-scheme:dark)").matches)
+  setDark(true);
+t.addEventListener("click", () => {
+  setDark(!r.classList.contains("dark"), true);
+});
+const navToggle = document.querySelector(".nav-toggle");
+const navContainer = document.querySelector(".nav-right");
+if (navToggle && navContainer)
+  navToggle.addEventListener("click", () => {
+    navContainer.classList.toggle("open");
+  });
+hljs.highlightAll();
+const lbOverlay = document.createElement("div");
+lbOverlay.className = "lightbox";
+const lbImg = document.createElement("img");
+const lbClose = document.createElement("button");
+lbClose.className = "lightbox-close";
+lbClose.innerHTML = "&#10005;";
+lbClose.setAttribute("aria-label", "Close");
+lbOverlay.appendChild(lbClose);
+lbOverlay.appendChild(lbImg);
+document.body.appendChild(lbOverlay);
+function closeLb() {
+  lbOverlay.classList.remove("active");
+  setTimeout(() => {
+    lbOverlay.style.display = "none";
+  }, 200);
+}
+lbClose.addEventListener("click", (e) => {
+  e.stopPropagation();
+  closeLb();
+});
+lbOverlay.addEventListener("click", (e) => {
+  if (e.target === lbOverlay) closeLb();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lbOverlay.classList.contains("active")) closeLb();
+});
+document.querySelectorAll(".prose img").forEach((img) => {
+  img.addEventListener("click", () => {
+    lbImg.src = img.src;
+    lbOverlay.style.display = "flex";
+    requestAnimationFrame(() => {
+      lbOverlay.classList.add("active");
+    });
+  });
+});
+document.querySelectorAll("pre").forEach((pre) => {
+  const code = pre.querySelector("code");
+  if (!code) return;
+  const m = code.className.match(/language-(\S+)/);
+  let lang = m ? m[1] : "";
+  if (lang === "plaintext" || lang === "undefined") lang = "";
+  if (lang) {
+    const lb = document.createElement("span");
+    lb.className = "code-lang";
+    lb.textContent = lang;
+    pre.insertBefore(lb, code);
+  }
+  const btn = document.createElement("button");
+  btn.className = "code-copy-btn";
+  btn.innerHTML = '<i data-lucide="copy" class="lucide"></i>';
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(code.textContent || "").then(() => {
+      btn.innerHTML = '<i data-lucide="check" class="lucide"></i>';
+      lucide.createIcons({
+        nodes: [btn],
+        nameAttr: "data-lucide",
+        attrs: { class: "lucide" },
+      });
+      setTimeout(() => {
+        btn.innerHTML = '<i data-lucide="copy" class="lucide"></i>';
+        lucide.createIcons({
+          nodes: [btn],
+          nameAttr: "data-lucide",
+          attrs: { class: "lucide" },
+        });
+      }, 1500);
+    });
+  });
+  pre.insertBefore(btn, code);
+});
+lucide.createIcons({nameAttr:'data-lucide',attrs:{class:'lucide'}});
+const si = document.getElementById("listingSearch");
+if (si) {
+  const items = document.querySelectorAll(".post-card");
+  si.addEventListener("input", function () {
+    const q = this.value.toLowerCase();
+    items.forEach((item) => {
+      item.style.display = item.textContent.toLowerCase().includes(q)
+        ? ""
+        : "none";
+    });
+  });
+}
+
+})();
+</script>
+</body>
+</html>
